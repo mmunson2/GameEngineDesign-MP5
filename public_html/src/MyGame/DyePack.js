@@ -33,10 +33,15 @@ function DyePack()
     this.velocityX = 0;
     this.velocityY = 0;
     
+    this.accelerationX = 0;
+    this.accelerationY = 0;
     
+    this.spriteTexture = null;
+    
+    gEngine.Textures.loadTexture(this.spriteSheet);
 }
 
-DyePack.prototype.draw = function ()
+DyePack.prototype.draw = function (camera)
 {
     
     
@@ -45,6 +50,13 @@ DyePack.prototype.draw = function ()
 DyePack.prototype.update = function ()
 {
     this._checkInput();
+    
+    
+    
+    this.velocityX += this.accelerationX;
+    this.velocityY += this.accelerationY;
+    
+    
     
 };
 
