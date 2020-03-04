@@ -19,6 +19,9 @@ function MyGame() {
     
     this.testDyePack = null;
     
+    this.hero = null;
+    
+    this.dyePacks = [];
   
 }
 gEngine.Core.inheritPrototype(MyGame, Scene);
@@ -28,7 +31,7 @@ MyGame.prototype.initialize = function () {
     this.mCamera = new Camera(
         vec2.fromValues(0, 0), // position of the camera
         200,                       // width of camera
-        [0, 0, 640, 480]           // viewport (orgX, orgY, width, height)
+        [0, 0, 800, 600]           // viewport (orgX, orgY, width, height)
     );
     this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
             // sets the background to gray
@@ -39,6 +42,8 @@ MyGame.prototype.initialize = function () {
     this.testDyePack = new DyePack(this.spriteSheet, 0, 0, 200);
     
     //this.testDyePack.initialize();
+    
+    this.hero = new Hero(this.spriteSheet);
 
    
 };
@@ -61,12 +66,12 @@ MyGame.prototype.draw = function () {
 
     this.mCamera.setupViewProjection();
     
-    if(this.testDyePack !== null)
-    {
-        this.testDyePack.draw(this.mCamera);
-    }
+    this.hero.draw(this.mCamera);
     
-
+    for (var i = 0; i < this.dyePacks.length; i++)
+    {
+        this.dyePacks[i].draw(this.mCamera);
+    }
     
 };
 
@@ -74,15 +79,20 @@ MyGame.prototype.draw = function () {
 // anything from this function!
 MyGame.prototype.update = function () 
 {
-    
-    if(this.testDyePack === null || this.testDyePack.isDead())
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Space))
     {
-        this.testDyePack = new DyePack(this.spriteSheet, 0, 0, 200);
-    }
-    else
-    {
-        this.testDyePack.update();
+        var hand = this.hero.getHandPos();
+        this.dyePacks.push(new DyePack(this.spriteSheet, hand[0], hand[1], 200));
     }
     
+    this.hero.update();
     
+    for (var i = 0; i < this.dyePacks.length; i++)
+    {
+        this.dyePacks[i].update();
+        if (this.dyePacks[i].isDead())
+        {
+            this.dyePacks.splice(i, 1);
+        }
+    }
 };

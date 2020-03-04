@@ -85,13 +85,15 @@ DyePack.prototype.initialize = function ()
 
 DyePack.prototype.isDead = function ()
 {
-    return this.frameCounter >= 5 * 60 || this.positionX > this.worldWidth / 2 ;
+    if (this.shaker !== null && this.shaker.shakeDone()) return true;
     
-    //return this.frameCounter >= 5 * 60 || this.velocityX <= 0;
+    if (this.frameCounter >= 5 * 60) return true;
+        
+    if (this.positionX > this.worldWidth / 2) return true;
+    
+    if (this.shaker === null && this.velocityX <= 0) return true;
 
 };
-
-
 
 DyePack.prototype.draw = function ( camera )
 {
@@ -105,8 +107,8 @@ DyePack.prototype.update = function ()
     
     if(this.isDeaccelerating && this.velocityX > 0)
     {
-        //this.accelerationX -= 0.1; 
-        this.velocityX *= 0.9
+        this.accelerationX -= 0.01; 
+        //this.velocityX *= 0.9;
     }
     
 
@@ -163,6 +165,8 @@ DyePack.prototype._checkInput = function ()
     if(gEngine.Input.isKeyClicked(gEngine.Input.keys.S))
     {
         this.shaker = new ShakePosition(4, 0.2, 20, 300);
+        this.velocityX = 0;
+        this.velocityY = 0;
     }
     
 };
