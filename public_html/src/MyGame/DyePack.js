@@ -26,24 +26,76 @@
  ********************************************************************************/
 
 
-function DyePack()
+function DyePack( dyePackTexture, positionX, positionY, worldWidth )
 {
     this.isDeaccelerating = false;
     
-    this.velocityX = 0;
+    
+    this.positionX = positionX;
+    this.positionY = positionY;
+    
+    this.velocityX = 2;
     this.velocityY = 0;
     
     this.accelerationX = 0;
     this.accelerationY = 0;
     
-    this.spriteTexture = null;
+    this.worldWidth = worldWidth;
     
-    gEngine.Textures.loadTexture(this.spriteSheet);
+    
+    this.texture = dyePackTexture;
+    this.spriteRenderable = null;
+    
+    this.isAlive = true;
+    
+    
+    //Initialization 
+    this.spriteRenderable = new SpriteRenderable(this.texture);
+    
+    this.spriteRenderable.setElementUVCoordinate(510 / 1024, 594 / 1024, 
+    (512 - 488) / 512, (512 - 360) / 512);
+    
+    
+    this.spriteRenderable.getXform().setPosition(this.positionX, this.positionY);
+    
+    this.spriteRenderable.getXform().setSize(2.3, 3.25);
+    
+    this.spriteRenderable.getXform().setRotationInDegree(90);
+    
+    
+    this.frameCounter = 0;
+    
+    
+    this.shaker = null;
 }
 
-DyePack.prototype.draw = function (camera)
+/*
+DyePack.prototype.initialize = function ()
 {
+    this.spriteRenderable = new SpriteRenderable(this.texture);
     
+    this.spriteRenderable.setElementUVCoordinate(0.5, 0.6, 0, 0.2);
+    
+    this.spriteRenderable.getXform().setPosition(50, 50);
+    
+    
+    
+};
+*/
+
+DyePack.prototype.isDead = function ()
+{
+    return this.frameCounter >= 5 * 60 || this.positionX > this.worldWidth / 2 ;
+    
+    //return this.frameCounter >= 5 * 60 || this.velocityX <= 0;
+
+};
+
+
+
+DyePack.prototype.draw = function ( camera )
+{
+    this.spriteRenderable.draw( camera );
     
 };
 
@@ -51,12 +103,47 @@ DyePack.prototype.update = function ()
 {
     this._checkInput();
     
+    if(this.isDeaccelerating && this.velocityX > 0)
+    {
+        //this.accelerationX -= 0.1; 
+        this.velocityX *= 0.9
+    }
     
-    
+
     this.velocityX += this.accelerationX;
     this.velocityY += this.accelerationY;
     
+    if(this.velocityX < 0)
+    {
+        this.velocityX = 0;
+    }
     
+    
+    this.positionX += this.velocityX;
+    this.positionY += this.velocityY;
+    
+    
+    //Shake test
+   
+        if(this.shaker !== null && !this.shaker.shakeDone())
+        {
+            var result = this.shaker.getShakeResults();
+
+            //this.positionX += result[0];
+            //this.positionY += result[1];
+
+            this.spriteRenderable.getXform().setPosition(this.positionX + result[0], this.positionY + result[1]);
+
+        }
+        else
+        {
+            this.spriteRenderable.getXform().setPosition(this.positionX, this.positionY);
+        }
+    
+    
+    
+    
+    this.frameCounter++;
     
 };
 
@@ -65,17 +152,39 @@ DyePack.prototype.update = function ()
 //Private Methods
 
 
+
 DyePack.prototype._checkInput = function ()
-{
-    if(gEngine.Input.isButtonPressed(gEngine.Input.D))
+{    
+    if(gEngine.Input.isKeyClicked(gEngine.Input.keys.D))
     {
         this.isDeaccelerating = true;
     }
     
-    if(gEngine.Input.isButtonPressed(gEngine.Input.S))
+    if(gEngine.Input.isKeyClicked(gEngine.Input.keys.S))
     {
-        //Trigger a Hit event
+        this.shaker = new ShakePosition(4, 0.2, 20, 300);
     }
     
 };
+
+DyePack.prototype._checkRemove = function ()
+{
+
+    
+    
+    
+};
+
+
+
+
+DyePack.prototype._hit = function ()
+{
+    
+    
+    
+    
+};
+
+
 
