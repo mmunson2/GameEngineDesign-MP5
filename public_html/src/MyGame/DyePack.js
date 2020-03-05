@@ -107,7 +107,7 @@ DyePack.prototype.update = function ()
     
     if(this.isDeaccelerating && this.velocityX > 0)
     {
-        this.accelerationX -= 0.01; 
+        this.velocityX -= 0.1; 
         //this.velocityX *= 0.9;
     }
     
