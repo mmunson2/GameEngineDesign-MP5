@@ -26,7 +26,7 @@
  ********************************************************************************/
 
 
-function DyePack( dyePackTexture, positionX, positionY, worldWidth )
+function DyePack( dyePackTexture, positionX, positionY, velocityX, velocityY, worldWidth )
 {
     this.isDeaccelerating = false;
     
@@ -34,14 +34,14 @@ function DyePack( dyePackTexture, positionX, positionY, worldWidth )
     this.positionX = positionX;
     this.positionY = positionY;
     
-    this.velocityX = 2;
-    this.velocityY = 0;
-    
-    this.accelerationX = 0;
-    this.accelerationY = 0;
+    this.velocityX = velocityX;
+    this.velocityY = velocityY;
+        
+    //Booleans to determine starting direction
+    this.xPositive = velocityX > 0;
+    this.yPositive = velocityY > 0;
     
     this.worldWidth = worldWidth;
-    
     
     this.texture = dyePackTexture;
     this.spriteRenderable = null;
@@ -69,30 +69,29 @@ function DyePack( dyePackTexture, positionX, positionY, worldWidth )
     this.shaker = null;
 }
 
-/*
-DyePack.prototype.initialize = function ()
-{
-    this.spriteRenderable = new SpriteRenderable(this.texture);
-    
-    this.spriteRenderable.setElementUVCoordinate(0.5, 0.6, 0, 0.2);
-    
-    this.spriteRenderable.getXform().setPosition(50, 50);
-    
-    
-    
-};
-*/
-
 DyePack.prototype.isDead = function ()
 {
     if (this.shaker !== null && this.shaker.shakeDone()) return true;
     
     if (this.frameCounter >= 5 * 60) return true;
-        
+    
+    //Die if we're outside world bounds
     if (this.positionX > this.worldWidth / 2) return true;
     
-    if (this.shaker === null && this.velocityX <= 0) return true;
-
+    if (this.positionX < -this.worldWidth / 2) return true;
+    
+    if (this.positionY > this.worldWidth / 1.5 / 2) return true;
+    
+    if (this.positionY < -this.worldWidth / 1.5 / 2) return true;
+    
+    //Die if we've come to a stop and we aren't shaking
+    if (this.shaker === null && this.velocityX <= 0 && this.velocityY <= 0 && this.xPositive && this.yPositive) return true;
+    
+    if (this.shaker === null && this.velocityX <= 0 && this.velocityY >= 0 && this.xPositive && !this.yPositive) return true;
+    
+    if (this.shaker === null && this.velocityX >= 0 && this.velocityY <= 0 && !this.xPositive && this.yPositive) return true;
+    
+    if (this.shaker === null && this.velocityX >= 0 && this.velocityY >= 0 && !this.xPositive && !this.yPositive) return true;
 };
 
 DyePack.prototype.draw = function ( camera )
@@ -105,44 +104,63 @@ DyePack.prototype.update = function ()
 {
     this._checkInput();
     
-    if(this.isDeaccelerating && this.velocityX > 0)
+    //Deaccelerate in X depending on which direction we started in 
+    if(this.isDeaccelerating && this.velocityX > 0 && this.xPositive)
     {
         this.velocityX -= 0.1; 
-        //this.velocityX *= 0.9;
+    }
+    if(this.isDeaccelerating && this.velocityX < 0 && !this.xPositive)
+    {
+        this.velocityX += 0.1; 
     }
     
-
-    this.velocityX += this.accelerationX;
-    this.velocityY += this.accelerationY;
+    //Deaccelerate in Y depending on which direction we started in
+    if(this.isDeaccelerating && this.velocityY > 0 && this.yPositive)
+    {
+        this.velocityY -= 0.1;
+    }
+    if(this.isDeaccelerating && this.velocityY < 0 && !this.yPositive)
+    {
+        this.velocityY += 0.1;
+    }
     
-    if(this.velocityX < 0)
+    //Check if we should clamp velocityX to zero
+    if(this.velocityX < 0 && this.xPositive)
+    {
+        this.velocityX = 0;
+    }
+    if(this.velocityX > 0 && !this.xPositive)
     {
         this.velocityX = 0;
     }
     
+    //Check if we should clamp velocityY to zero 
+    if(this.velocityY < 0 && this.yPositive)
+    {
+        this.velocityY = 0;
+    }
+    if(this.velocityY > 0 && !this.yPositive)
+    {
+        this.velocityY = 0;
+    }
     
+    //Convert velocity to position
     this.positionX += this.velocityX;
     this.positionY += this.velocityY;
     
     
-    //Shake test
-   
-        if(this.shaker !== null && !this.shaker.shakeDone())
-        {
-            var result = this.shaker.getShakeResults();
+    //Apply shaker if its active
+    if(this.shaker !== null && !this.shaker.shakeDone())
+    {
+        var result = this.shaker.getShakeResults();
 
-            //this.positionX += result[0];
-            //this.positionY += result[1];
+        this.spriteRenderable.getXform().setPosition(this.positionX + result[0], this.positionY + result[1]);
 
-            this.spriteRenderable.getXform().setPosition(this.positionX + result[0], this.positionY + result[1]);
-
-        }
-        else
-        {
-            this.spriteRenderable.getXform().setPosition(this.positionX, this.positionY);
-        }
-    
-    
+    }
+    else //Shaker is not active
+    {
+        this.spriteRenderable.getXform().setPosition(this.positionX, this.positionY);
+    }
     
     
     this.frameCounter++;
@@ -163,22 +181,13 @@ DyePack.prototype._checkInput = function ()
     }
     
     if(gEngine.Input.isKeyClicked(gEngine.Input.keys.S))
-    {
+    {                
         this.shaker = new ShakePosition(4, 0.2, 20, 300);
         this.velocityX = 0;
         this.velocityY = 0;
     }
     
 };
-
-DyePack.prototype._checkRemove = function ()
-{
-
-    
-    
-    
-};
-
 
 
 

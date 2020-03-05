@@ -39,7 +39,7 @@ MyGame.prototype.initialize = function () {
 
     gEngine.Textures.loadTexture(this.spriteSheet);
 
-    this.testDyePack = new DyePack(this.spriteSheet, 0, 0, 200);
+    this.testDyePack = new DyePack(this.spriteSheet, 0, 0, 2, 0, 200);
     
     //this.testDyePack.initialize();
     
@@ -73,6 +73,8 @@ MyGame.prototype.draw = function () {
         this.dyePacks[i].draw(this.mCamera);
     }
     
+    this.testDyePack.draw(this.mCamera);
+    
 };
 
 // The Update function, updates the application state. Make sure to _NOT_ draw
@@ -82,7 +84,7 @@ MyGame.prototype.update = function ()
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Space))
     {
         var hand = this.hero.getHandPos();
-        this.dyePacks.push(new DyePack(this.spriteSheet, hand[0], hand[1], 200));
+        this.dyePacks.push(new DyePack(this.spriteSheet, hand[0], hand[1], 2, 0, 200));
     }
     
     this.hero.update();
@@ -95,4 +97,12 @@ MyGame.prototype.update = function ()
             this.dyePacks.splice(i, 1);
         }
     }
+    
+    if(this.testDyePack.isDead())
+    {
+        var hand = this.hero.getHandPos();
+        this.testDyePack = new DyePack(this.spriteSheet, hand[0], hand[1], Math.random() * 4 - 2, Math.random() * 4 - 2, 200);
+    }
+    
+    this.testDyePack.update();
 };
