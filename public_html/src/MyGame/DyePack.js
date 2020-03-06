@@ -69,16 +69,9 @@ function DyePack( dyePackTexture, positionX, positionY, velocityX, velocityY, wo
     this.shaker = null;
 }
 
-DyePack.prototype.getBounds = function()
-{
-    var bounds = [this.positionY + 3.3 / 2, this.positionY - 3.3 / 2, this.positionX - 3.3 / 2, this.positionX + 3.3 / 2];
-    return bounds;
-};
-
-DyePack.prototype.getRenderable = function()
-{
-    return this.spriteRenderable;
-}
+// Camden: getter for collisions
+DyePack.prototype.getRenderable = function() {return this.spriteRenderable;};
+DyePack.prototype.isShaking = function() {return this.shaker !== null;};
 
 DyePack.prototype.isDead = function ()
 {
@@ -178,11 +171,16 @@ DyePack.prototype.update = function ()
     
 };
 
+// Camden: starts the shaker
+DyePack.prototype.startShake = function()
+{
+    this.shaker = new ShakePosition(4, 0.2, 20, 300);
+    this.velocityX = 0;
+    this.velocityY = 0;
+};
 
 //_______________________________________________________________________________
 //Private Methods
-
-
 
 DyePack.prototype._checkInput = function ()
 {    
@@ -193,14 +191,10 @@ DyePack.prototype._checkInput = function ()
     
     if(gEngine.Input.isKeyClicked(gEngine.Input.keys.S))
     {                
-        this.shaker = new ShakePosition(4, 0.2, 20, 300);
-        this.velocityX = 0;
-        this.velocityY = 0;
+        this.startShake();
     }
     
 };
-
-
 
 DyePack.prototype._hit = function ()
 {
@@ -209,6 +203,3 @@ DyePack.prototype._hit = function ()
     
     
 };
-
-
-

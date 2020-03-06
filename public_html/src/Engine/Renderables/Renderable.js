@@ -28,6 +28,17 @@ Renderable.prototype.draw = function (aCamera) {
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 };
 
+// Camden: returns a bounding box for the renderable
+Renderable.prototype.getBoundingBox = function()
+{
+    // top bot left right
+    var bounds = [this.mXform.getYPos() + this.mXform.getHeight() / 2, 
+                  this.mXform.getYPos() - this.mXform.getHeight() / 2,
+                  this.mXform.getXPos() - this.mXform.getWidth() / 2,
+                  this.mXform.getXPos() + this.mXform.getWidth() / 2];
+    return bounds;
+};
+
 Renderable.prototype.getXform = function () { return this.mXform; };
 Renderable.prototype.setColor = function (color) { this.mColor = color; };
 Renderable.prototype.getColor = function () { return this.mColor; };

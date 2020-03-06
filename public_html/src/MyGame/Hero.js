@@ -2,6 +2,7 @@
  * Hero Class
  ********************************************************************************/
 
+// Camden
 
 function Hero(spriteSheet)
 {
@@ -18,6 +19,9 @@ function Hero(spriteSheet)
     this.shaker = null;
 }
 
+Hero.prototype.getRenderable = function() {return this.spriteRenderable;};
+Hero.prototype.isShaking = function() {return this.shaker !== null;};
+
 Hero.prototype.draw = function (camera)
 {
     this.spriteRenderable.draw(camera);
@@ -27,7 +31,7 @@ Hero.prototype.update = function ()
 {
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Q))
     {
-        this.shaker = new ShakePosition(4.5, 6, 4, 60);
+        this.startShake();
     }
     
     if (this.shaker !== null && !this.shaker.shakeDone())
@@ -35,6 +39,8 @@ Hero.prototype.update = function ()
         var result = this.shaker.getShakeResults();
         this.spriteRenderable.getXform().setSize(9 + result[0], 12 + result[0] * 1.333);
     }
+    
+    if (this.shaker !== null && this.shaker.shakeDone()) this.shaker = null;
     
     var targetX = (gEngine.Input.getMousePosX() / 800) * 200 - 100;
     var targetY = (gEngine.Input.getMousePosY() / 600) * 150 - 75;
@@ -50,6 +56,11 @@ Hero.prototype.update = function ()
     
     this.spriteRenderable.getXform().setPosition(this.interpolateX.getValue(), this.interpolateY.getValue());
     
+};
+
+Hero.prototype.startShake = function()
+{
+    this.shaker = new ShakePosition(4.5, 6, 4, 60);
 };
 
 Hero.prototype.getHandPos = function()

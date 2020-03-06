@@ -2,6 +2,7 @@
  * PatrolSet
  ********************************************************************************/
 
+// Camden
 
 function PatrolSet(spriteSheet, worldWidth)
 {
@@ -39,6 +40,7 @@ PatrolSet.prototype.update = function ()
         this.waiting = false;
     }
     
+    // auto spawning stuff
     if (this.autoSpawn && !this.waiting)
     {
         this.remainingFrames = Math.random() * 60 + 120;
@@ -54,11 +56,13 @@ PatrolSet.prototype.update = function ()
         this._spawnPatrol();
     }
     
+    // updating
     for (var i = 0; i < this.patrolArray.length; i++)
     {
         this.patrolArray[i].update();
     }
     
+    // checking for dead patrols
     for (var i = 0; i < this.patrolArray.length; i++)
     {
         if (this.patrolArray[i].isDead())
@@ -69,6 +73,81 @@ PatrolSet.prototype.update = function ()
     }
 };
 
+PatrolSet.prototype.dyePackCollide = function(dyePack)
+{
+    if (this.patrolArray.length === 0) return false;
+
+    var dyePackBox = dyePack.getRenderable().getBoundingBox();
+    
+    for (var i = 0; i < this.patrolArray.length; i++)
+    {
+        if (!this.isNear(dyePackBox, this.patrolArray[i].getBoundingBox()))
+        {
+            continue;
+        }
+        
+        if (!dyePack.isShaking() && this.isNear(dyePackBox, this.patrolArray[i].getHead().getBoundingBox()))
+        {
+            this.patrolArray[i].headCollision();
+            dyePack.startShake();
+            continue;
+        }
+        
+        if (!dyePack.isShaking() && this.isNear(dyePackBox, this.patrolArray[i].getTop().getBoundingBox()))
+        {
+            this.patrolArray[i].topCollision();
+            dyePack.startShake();
+            continue;
+        }
+        
+        if (!dyePack.isShaking() && this.isNear(dyePackBox, this.patrolArray[i].getBot().getBoundingBox()))
+        {
+            this.patrolArray[i].bottomCollision();
+            dyePack.startShake();
+            continue;
+        }
+    }
+    
+};
+
+PatrolSet.prototype.heroCollide = function(hero)
+{
+    if (this.patrolArray.length === 0) return false;
+    
+    var heroBox = hero.getRenderable().getBoundingBox();
+    
+    for (var i = 0; i < this.patrolArray.length; i++)
+    {
+        if (!this.isNear(heroBox, this.patrolArray[i].getBoundingBox()))
+        {
+            continue;
+        }
+        
+        if (!hero.isShaking() && this.isNear(heroBox, this.patrolArray[i].getHead().getBoundingBox()))
+        {
+            hero.startShake();
+        }
+    }
+};
+
+PatrolSet.prototype.isNear = function (boxA, boxB)
+{
+    //  checking top
+    if (boxA[0] <= boxB[0] && boxA[0] >= boxB[1] && (( boxA[2] >= boxB[2] && boxA[2] <= boxB[3] ) || ( boxA[3] >= boxB[2] && boxA[3] <= boxB[3] ))) return true;
+    
+    //  checking bottom
+    if (boxA[1] <= boxB[0] && boxA[1] >= boxB[1] && (( boxA[2] >= boxB[2] && boxA[2] <= boxB[3] ) || ( boxA[3] >= boxB[2] && boxA[3] <= boxB[3] ))) return true;
+    
+    //  checking left
+    if (boxA[2] >= boxB[2] && boxA[2] <= boxB[3] && (( boxA[0] <= boxB[0] && boxA[0] >= boxB[1] ) || ( boxA[1] <= boxB[0] && boxA[1] >= boxB[1] ))) return true;
+    
+    //  checking right
+    if (boxA[3] >= boxB[2] && boxA[3] <= boxB[3] && (( boxA[0] <= boxB[0] && boxA[0] >= boxB[1] ) || ( boxA[1] <= boxB[0] && boxA[1] >= boxB[1] ))) return true;
+    
+    // checking if one surrounds the other
+    if (boxA[0] >= boxB[0] && boxA[1] <= boxB[1] && boxA[2] <= boxB[2] && boxA[3] >= boxB[3]) return true;
+};
+
 PatrolSet.prototype._spawnPatrol = function()
 {
     // 10/60 and 5/60
@@ -76,9 +155,4 @@ PatrolSet.prototype._spawnPatrol = function()
     var velocityY = ((Math.random() > 0.5) ? -1 : 1) * (Math.random() * 5 + 5) / 60;
     patrol = new Patrol(this.spriteSheet, Math.random() * (this.worldWidth / 2), Math.random() * (this.worldHeight / 4) - this.worldHeight / 8, velocityX, velocityY, this.worldWidth);
     this.patrolArray.push(patrol);
-};
-
-PatrolSet.prototype._autoSpawn = function()
-{
-    
 };

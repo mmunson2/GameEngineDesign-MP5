@@ -55,17 +55,11 @@ function Patrol( spriteSheet, positionX, positionY, velocityX, velocityY, worldW
     this.testCounter1 = 0;
 }
 
-Patrol.prototype.checkCollisions = function(bounds, renderable)
-{
-    if (bounds[0] <= this.boundingBox[0] && bounds[0] >= this.boundingBox[1]);
-    
-    if (bounds[1] >= this.boundingBox[1] && bounds[1] <= this.boundingBox[0]);
-    
-    if (bounds[2] >= this.boundingBox[2] && bounds[2] <= this.boundingBox[3]);
-    
-    if (bounds[3] <= this.boundingBox[3] && bounds[3] >= this.boundingBox[2]);
-    
-};
+// Camden: getters for collisions
+Patrol.prototype.getBoundingBox = function() {return this.boundingBox;};
+Patrol.prototype.getHead = function () {return this.head;};
+Patrol.prototype.getTop = function () {return this.top;};
+Patrol.prototype.getBot = function () {return this.bottom;};
 
 Patrol.prototype.draw = function ( camera )
 {
@@ -86,8 +80,8 @@ Patrol.prototype.update = function ()
     
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.W))
     {
-        this.topWingCollision();
-        this.bottomWingCollision();
+        this.topCollision();
+        this.bottomCollision();
     }
     
     this.top.updateAnimation();
@@ -139,20 +133,22 @@ Patrol.prototype.update = function ()
     this.checkBounds();
 };
 
-
+// Camden: activates a head collision
 Patrol.prototype.headCollision = function()
 {
     this.positionX += 5;
 };
 
-Patrol.prototype.topWingCollision = function()
+// Camden: activates a top collision
+Patrol.prototype.topCollision = function()
 {
     var color = this.top.getColor();
     color[3] += 0.2;
     this.top.setColor(color);
 };
 
-Patrol.prototype.bottomWingCollision = function()
+// Camden: activates a bot collision
+Patrol.prototype.bottomCollision = function()
 {
     var color = this.bottom.getColor();
     color[3] += 0.2;
@@ -172,7 +168,6 @@ Patrol.prototype.isDead = function()
     
     return false;
 };
-
 
 Patrol.prototype.checkBounds = function ()
 {
