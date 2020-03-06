@@ -69,6 +69,17 @@ function DyePack( dyePackTexture, positionX, positionY, velocityX, velocityY, wo
     this.shaker = null;
 }
 
+DyePack.prototype.getBounds = function()
+{
+    var bounds = [this.positionY + 3.3 / 2, this.positionY - 3.3 / 2, this.positionX - 3.3 / 2, this.positionX + 3.3 / 2];
+    return bounds;
+};
+
+DyePack.prototype.getRenderable = function()
+{
+    return this.spriteRenderable;
+}
+
 DyePack.prototype.isDead = function ()
 {
     if (this.shaker !== null && this.shaker.shakeDone()) return true;

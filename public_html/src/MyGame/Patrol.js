@@ -40,20 +40,32 @@ function Patrol( spriteSheet, positionX, positionY, velocityX, velocityY, worldW
     this.bottom.getXform().setPosition(this.positionX + 10, this.positionY - 6);
     this.bottom.getXform().setSize(10, 8);
     
-    //this.top.setSpriteSequence(300, 0, 204, 164, 5, 0);
+    //this.top.setSpriteSequence(512, 0, 204, 164, 5, 0);
     this.bottom.setAnimationType(SpriteAnimateRenderable.eAnimationType.eAnimateSwing);
     this.bottom.setAnimationSpeed(15);
     
     
 
-    this.interpolateTopX = new Interpolate(0, 120, 0.05);
-    this.interpolateTopY = new Interpolate(0, 120, 0.05);
+    this.interpolateTopX = new Interpolate(this.positionX, 120, 0.05);
+    this.interpolateTopY = new Interpolate(this.positionY, 120, 0.05);
     
-    this.interpolateBottomX = new Interpolate(0, 120, 0.05);
-    this.interpolateBottomY = new Interpolate(0, 120, 0.05);
+    this.interpolateBottomX = new Interpolate(this.positionX, 120, 0.05);
+    this.interpolateBottomY = new Interpolate(this.positionY, 120, 0.05);
 
     this.testCounter1 = 0;
 }
+
+Patrol.prototype.checkCollisions = function(bounds, renderable)
+{
+    if (bounds[0] <= this.boundingBox[0] && bounds[0] >= this.boundingBox[1]);
+    
+    if (bounds[1] >= this.boundingBox[1] && bounds[1] <= this.boundingBox[0]);
+    
+    if (bounds[2] >= this.boundingBox[2] && bounds[2] <= this.boundingBox[3]);
+    
+    if (bounds[3] <= this.boundingBox[3] && bounds[3] >= this.boundingBox[2]);
+    
+};
 
 Patrol.prototype.draw = function ( camera )
 {
@@ -67,6 +79,17 @@ Patrol.prototype.draw = function ( camera )
 
 Patrol.prototype.update = function ()
 {
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.J))
+    {
+        this.headCollision();
+    }
+    
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.W))
+    {
+        this.topWingCollision();
+        this.bottomWingCollision();
+    }
+    
     this.top.updateAnimation();
     this.bottom.updateAnimation();
     
@@ -80,7 +103,6 @@ Patrol.prototype.update = function ()
     
     this.positionX += this.velocityX;
     this.positionY += this.velocityY;
-    
     
     this.head.getXform().setPosition(this.positionX, this.positionY);
     
@@ -112,14 +134,43 @@ Patrol.prototype.update = function ()
     //Right Bound
     this.boundingBox[3] = this.interpolateTopX.getValue() + 10/2;
     
-    console.log("Top: " + this.boundingBox[0]);
-    console.log("Bottom: " + this.boundingBox[1]);
-    console.log("Left: " + this.boundingBox[2]);
-    console.log("Right: " + this.boundingBox[3]);
-    
     
     
     this.checkBounds();
+};
+
+
+Patrol.prototype.headCollision = function()
+{
+    this.positionX += 5;
+};
+
+Patrol.prototype.topWingCollision = function()
+{
+    var color = this.top.getColor();
+    color[3] += 0.2;
+    this.top.setColor(color);
+};
+
+Patrol.prototype.bottomWingCollision = function()
+{
+    var color = this.bottom.getColor();
+    color[3] += 0.2;
+    this.bottom.setColor(color);
+};
+
+Patrol.prototype.isDead = function()
+{
+    //console.log("is it dead yet?");
+    var topColor = this.top.getColor();
+    var botColor = this.bottom.getColor();
+    
+    if (topColor[3] >= 1.0) return true;
+    if (botColor[3] >= 1.0) return true;
+    
+    if (this.boundingBox[2] > this.worldWidth / 2) return true;
+    
+    return false;
 };
 
 
@@ -157,5 +208,5 @@ Patrol.prototype.checkBounds = function ()
             this.velocityX *= -1;
         }
     } 
-}
+};
 

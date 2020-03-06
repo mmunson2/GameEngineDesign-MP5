@@ -23,7 +23,7 @@ function MyGame() {
     
     this.dyePacks = [];
     
-    this.testPatrol = null;
+    this.patrolSet = null;
   
 }
 gEngine.Core.inheritPrototype(MyGame, Scene);
@@ -43,11 +43,9 @@ MyGame.prototype.initialize = function () {
 
     this.testDyePack = new DyePack(this.spriteSheet, 0, 0, 2, 0, 200);
     
-    //this.testDyePack.initialize();
-    
     this.hero = new Hero(this.spriteSheet);
     
-    this.testPatrol = new Patrol(this.spriteSheet, 0, 0, 1/6, 1/6, 200);
+    this.patrolSet = new PatrolSet(this.spriteSheet, 200);
        
 };
 
@@ -57,9 +55,6 @@ MyGame.prototype.unloadScene = function ()
     
     
 };
-
-
-
 
 // This is the draw function, make sure to setup proper drawing environment, and more
 // importantly, make sure to _NOT_ change any state.
@@ -78,7 +73,7 @@ MyGame.prototype.draw = function () {
     
     this.testDyePack.draw(this.mCamera);
     
-    this.testPatrol.draw(this.mCamera);
+    this.patrolSet.draw(this.mCamera);
     
 };
 
@@ -97,9 +92,13 @@ MyGame.prototype.update = function ()
     for (var i = 0; i < this.dyePacks.length; i++)
     {
         this.dyePacks[i].update();
+    }
+    for (var i = 0; i < this.dyePacks.length; i++)
+    {
         if (this.dyePacks[i].isDead())
         {
             this.dyePacks.splice(i, 1);
+            break;
         }
     }
     
@@ -111,5 +110,5 @@ MyGame.prototype.update = function ()
     
     this.testDyePack.update();
     
-    this.testPatrol.update();
+    this.patrolSet.update();
 };
