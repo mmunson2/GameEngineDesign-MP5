@@ -5,6 +5,9 @@
 
 function PatrolSet()
 {
+    this.patrolArray = [];
+    
+    
     
 }
 
@@ -19,3 +22,4 @@ PatrolSet.prototype.update = function ()
     
     
 };
+

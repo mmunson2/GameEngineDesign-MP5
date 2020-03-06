@@ -80,9 +80,9 @@ DyePack.prototype.isDead = function ()
     
     if (this.positionX < -this.worldWidth / 2) return true;
     
-    if (this.positionY > this.worldWidth / 1.5 / 2) return true;
+    if (this.positionY > this.worldWidth / 1.333 / 2) return true;
     
-    if (this.positionY < -this.worldWidth / 1.5 / 2) return true;
+    if (this.positionY < -this.worldWidth / 1.333 / 2) return true;
     
     //Die if we've come to a stop and we aren't shaking
     if (this.shaker === null && this.velocityX <= 0 && this.velocityY <= 0 && this.xPositive && this.yPositive) return true;

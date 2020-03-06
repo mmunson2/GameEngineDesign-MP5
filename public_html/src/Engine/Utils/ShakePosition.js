@@ -36,8 +36,11 @@ ShakePosition.prototype.getShakeResults = function () {
     var fy = 0;
     if (!this.shakeDone()) {
         var v = this._nextDampedHarmonic();
-        fx = (Math.random() > 0.5) ? -v : v;
-        fy = (Math.random() > 0.5) ? -v : v;
+        //fx = (Math.random() > 0.5) ? -v : v;
+        //fy = (Math.random() > 0.5) ? -v : v;
+        fx = -v;
+        fy = -v;
+        
     }
     c[0] = this.mXMag * fx;
     c[1] = this.mYMag * fy;

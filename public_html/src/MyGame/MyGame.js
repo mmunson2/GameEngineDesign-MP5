@@ -22,6 +22,8 @@ function MyGame() {
     this.hero = null;
     
     this.dyePacks = [];
+    
+    this.testPatrol = null;
   
 }
 gEngine.Core.inheritPrototype(MyGame, Scene);
@@ -44,8 +46,9 @@ MyGame.prototype.initialize = function () {
     //this.testDyePack.initialize();
     
     this.hero = new Hero(this.spriteSheet);
-
-   
+    
+    this.testPatrol = new Patrol(this.spriteSheet, 0, 0, 1/6, 1/6, 200);
+       
 };
 
 MyGame.prototype.unloadScene = function ()
@@ -74,6 +77,8 @@ MyGame.prototype.draw = function () {
     }
     
     this.testDyePack.draw(this.mCamera);
+    
+    this.testPatrol.draw(this.mCamera);
     
 };
 
@@ -105,4 +110,6 @@ MyGame.prototype.update = function ()
     }
     
     this.testDyePack.update();
+    
+    this.testPatrol.update();
 };
