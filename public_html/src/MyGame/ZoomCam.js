@@ -127,15 +127,15 @@ ZoomCam.prototype.update = function ()
     }
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.One))
     {
-        this.cam2bool = true;
+        this.cam2bool = !this.cam2bool;
     }
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Two))
     {
-        this.cam3bool = true;
+        this.cam3bool = !this.cam3bool;
     }
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Three))
     {
-        this.cam4bool = true;
+        this.cam4bool = !this.cam4bool;
     }
     
     if (this.forceHeroCam) this.cam1bool = true;
