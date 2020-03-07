@@ -16,6 +16,8 @@ function Hero(spriteSheet)
     this.interpolateX = new Interpolate(0, 120, 0.5);
     this.interpolateY = new Interpolate(0, 120, 0.5);
     
+    this.showBoundingBox = false;
+    
     this.shaker = null;
 }
 
@@ -25,13 +27,51 @@ Hero.prototype.isShaking = function() {return this.shaker !== null;};
 Hero.prototype.draw = function (camera)
 {
     this.spriteRenderable.draw(camera);
+    
+    if(this.showBoundingBox)
+    {
+        for(var i = 0; i < 4; i++)
+        {
+            this.heroBound[i].draw(camera);
+        }
+    }
+    
 };
+
+Hero.prototype._updateHeroBound = function()
+{
+    this.heroBound = [];
+    
+    var xPos = this.spriteRenderable.getXform().getPosition()[0];
+    var yPos = this.spriteRenderable.getXform().getPosition()[1];
+    
+    var height = this.spriteRenderable.getXform().getHeight();
+    var width = this.spriteRenderable.getXform().getWidth();
+       
+    //Top left to top right (top bound)
+    this.heroBound[0] = new LineRenderable(xPos - width / 2, yPos + height / 2, xPos + width / 2, yPos + height / 2);
+    
+    //Bottom left to bottom right (bottom bound)
+    this.heroBound[1] = new LineRenderable(xPos - width / 2, yPos - height / 2, xPos + width / 2, yPos - height / 2);
+    
+    //Top left to bottom left (left bound)
+    this.heroBound[2] = new LineRenderable(xPos - width / 2, yPos + height / 2, xPos - width / 2, yPos - height /2);
+    
+    //Top right to bottom right (right bound)
+    this.heroBound[3] = new LineRenderable(xPos + width / 2, yPos + height / 2, xPos + width / 2, yPos - height /2);
+}
+
 
 Hero.prototype.update = function ()
 {
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Q))
     {
         this.startShake();
+    }
+    
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.B))
+    {
+        this.showBoundingBox = !this.showBoundingBox;
     }
     
     if (this.shaker !== null && !this.shaker.shakeDone())
@@ -56,6 +96,7 @@ Hero.prototype.update = function ()
     
     this.spriteRenderable.getXform().setPosition(this.interpolateX.getValue(), this.interpolateY.getValue());
     
+    this._updateHeroBound();
 };
 
 Hero.prototype.startShake = function()

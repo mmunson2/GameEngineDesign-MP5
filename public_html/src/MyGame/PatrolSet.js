@@ -148,7 +148,8 @@ PatrolSet.prototype.isNear = function (boxA, boxB)
     if (boxA[3] >= boxB[2] && boxA[3] <= boxB[3] && (( boxA[0] <= boxB[0] && boxA[0] >= boxB[1] ) || ( boxA[1] <= boxB[0] && boxA[1] >= boxB[1] ))) return true;
     
     // checking if one surrounds the other
-    if (boxA[0] >= boxB[0] && boxA[1] <= boxB[1] && boxA[2] <= boxB[2] && boxA[3] >= boxB[3]) return true;
+    if (boxA[0] >= boxB[0] && boxA[1] <= boxB[1] && (( boxA[2] >= boxB[2] && boxA[2] <= boxB[3] ) || ( boxA[3] >= boxB[2] && boxA[3] <= boxB[3] ))) return true;
+   
 };
 
 PatrolSet.prototype._spawnPatrol = function()

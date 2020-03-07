@@ -31,10 +31,7 @@ function Background( skyTexture, mountainTexture, mountainsTexture, trees1Textur
     this.trees2 = new TextureRenderable(trees2Texture);
     this.trees2.getXform().setPosition(100,-50);
     this.trees2.getXform().setHeight(100);
-    this.trees2.getXform().setWidth(200);
-    
-    
-    
+    this.trees2.getXform().setWidth(200); 
 }
 
 

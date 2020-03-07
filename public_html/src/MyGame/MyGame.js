@@ -21,15 +21,8 @@ function MyGame()
     this.skyTexture = "assets/sky.png";
     this.trees1Texture = "assets/trees1.png";
     this.trees2Texture = "assets/trees2.png";
-    
-    this.mountains = null;
-    this.mountains = null;
-    this.sky = null;
-    this.trees1 = null;
-    this.trees2 = null;
-   
-   
-    this.testDyePack = null;
+       
+    this.powerUp = false;
     
     this.hero = null;
     
@@ -59,8 +52,6 @@ MyGame.prototype.initialize = function ()
     gEngine.Textures.loadTexture(this.skyTexture);
     gEngine.Textures.loadTexture(this.trees1Texture);
     gEngine.Textures.loadTexture(this.trees2Texture);
-
-    this.testDyePack = new DyePack(this.spriteSheet, 0, 0, 2, 0, 200);
     
     this.hero = new Hero(this.spriteSheet);
     
@@ -101,9 +92,7 @@ MyGame.prototype.draw = function ()
     {
         this.dyePacks[i].draw(this.mCamera);
     }
-    
-    this.testDyePack.draw(this.mCamera);
-    
+        
     this.patrolSet.draw(this.mCamera);
     
     var cam1 = this.zoomCam.getCam1();
@@ -120,7 +109,7 @@ MyGame.prototype.draw = function ()
         {
            this.dyePacks[i].draw(cam1);
         }
-        this.testDyePack.draw(cam1);
+        
         this.patrolSet.draw(cam1);
     }
     
@@ -133,7 +122,6 @@ MyGame.prototype.draw = function ()
         {
            this.dyePacks[i].draw(cam2);
         }
-        this.testDyePack.draw(cam2);
         this.patrolSet.draw(cam2);
     }
     
@@ -146,7 +134,6 @@ MyGame.prototype.draw = function ()
         {
            this.dyePacks[i].draw(cam3);
         }
-        this.testDyePack.draw(cam3);
         this.patrolSet.draw(cam3);
     }
     
@@ -159,7 +146,6 @@ MyGame.prototype.draw = function ()
         {
            this.dyePacks[i].draw(cam4);
         }
-        this.testDyePack.draw(cam4);
         this.patrolSet.draw(cam4);
     }
     
@@ -174,6 +160,11 @@ MyGame.prototype.update = function ()
     {
         var hand = this.hero.getHandPos();
         this.dyePacks.push(new DyePack(this.spriteSheet, hand[0], hand[1], 2, 0, 200));
+    }
+    
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.A))
+    {
+        this.powerUp = !this.powerUp;
     }
 
     // Camden: updating all the dye packs
@@ -210,13 +201,12 @@ MyGame.prototype.update = function ()
     
     if (!this.hero.isShaking()) this.zoomCam.disableHeroCam();
     
-    if(this.testDyePack.isDead())
+    if(this.powerUp)
     {
         var hand = this.hero.getHandPos();
-        this.testDyePack = new DyePack(this.spriteSheet, hand[0], hand[1], Math.random() * 4 - 2, Math.random() * 4 - 2, 200);
+        this.dyePacks.push(new DyePack(this.spriteSheet, hand[0], hand[1], Math.random() * 4 - 2, Math.random() * 4 - 2, 200));
     }
     
-    this.testDyePack.update();
     this.hero.update();
     this.zoomCam.updateHeroPos(this.hero);
     
