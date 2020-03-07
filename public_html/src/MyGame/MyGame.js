@@ -226,4 +226,5 @@ MyGame.prototype.update = function ()
     this.zoomCam.update();
     
     document.getElementById("num_dyepacks").innerHTML = this.dyePacks.length;
+    document.getElementById("bounds").innerHTML = this.showBound;
 };
