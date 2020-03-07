@@ -93,21 +93,21 @@ PatrolSet.prototype.dyePackCollide = function(dyePack)
         {
             this.patrolArray[i].headCollision();
             dyePack.startShake();
-            continue;
+            return true;
         }
         
         if (!dyePack.isShaking() && this.isNear(dyePackBox, this.patrolArray[i].getTop().getBoundingBox()))
         {
             this.patrolArray[i].topCollision();
             dyePack.startShake();
-            continue;
+            return true;
         }
         
         if (!dyePack.isShaking() && this.isNear(dyePackBox, this.patrolArray[i].getBot().getBoundingBox()))
         {
             this.patrolArray[i].bottomCollision();
             dyePack.startShake();
-            continue;
+            return true;
         }
     }
     
@@ -128,7 +128,7 @@ PatrolSet.prototype.heroCollide = function(hero)
         
         if (!hero.isShaking() && this.isNear(heroBox, this.patrolArray[i].getHead().getBoundingBox()))
         {
-            hero.startShake();
+            return true;
         }
     }
 };

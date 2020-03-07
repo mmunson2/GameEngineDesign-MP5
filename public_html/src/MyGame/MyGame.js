@@ -38,6 +38,8 @@ function MyGame()
     this.patrolSet = null;
     
     this.background = null;
+    
+    this.zoomCam = null;
   
 }
 gEngine.Core.inheritPrototype(MyGame, Scene);
@@ -65,6 +67,8 @@ MyGame.prototype.initialize = function ()
     this.patrolSet = new PatrolSet(this.spriteSheet, 200);
 
     this.background = new Background(this.skyTexture, this.mountainTexture, this.mountainsTexture, this.trees1Texture, this.trees2Texture);
+    
+    this.zoomCam = new ZoomCam();
 };
 
 MyGame.prototype.unloadScene = function ()
@@ -102,6 +106,62 @@ MyGame.prototype.draw = function ()
     
     this.patrolSet.draw(this.mCamera);
     
+    var cam1 = this.zoomCam.getCam1();
+    var cam2 = this.zoomCam.getCam2();
+    var cam3 = this.zoomCam.getCam3();
+    var cam4 = this.zoomCam.getCam4();
+    
+    if (cam1 !== null)
+    {
+        cam1.setupViewProjection();
+        this.background.draw(cam1);
+        this.hero.draw(cam1);
+        for (var i = 0; i < this.dyePacks.length; i++)
+        {
+           this.dyePacks[i].draw(cam1);
+        }
+        this.testDyePack.draw(cam1);
+        this.patrolSet.draw(cam1);
+    }
+    
+    if (cam2 !== null)
+    {
+        cam2.setupViewProjection();
+        this.background.draw(cam2);
+        this.hero.draw(cam2);
+        for (var i = 0; i < this.dyePacks.length; i++)
+        {
+           this.dyePacks[i].draw(cam2);
+        }
+        this.testDyePack.draw(cam2);
+        this.patrolSet.draw(cam2);
+    }
+    
+    if (cam3 !== null)
+    {
+        cam3.setupViewProjection();
+        this.background.draw(cam3);
+        this.hero.draw(cam3);
+        for (var i = 0; i < this.dyePacks.length; i++)
+        {
+           this.dyePacks[i].draw(cam3);
+        }
+        this.testDyePack.draw(cam3);
+        this.patrolSet.draw(cam3);
+    }
+    
+    if (cam4 !== null)
+    {
+        cam4.setupViewProjection();
+        this.background.draw(cam4);
+        this.hero.draw(cam4);
+        for (var i = 0; i < this.dyePacks.length; i++)
+        {
+           this.dyePacks[i].draw(cam4);
+        }
+        this.testDyePack.draw(cam4);
+        this.patrolSet.draw(cam4);
+    }
     
 };
 
@@ -135,11 +195,20 @@ MyGame.prototype.update = function ()
     // Camden: checking for dyepack collisions
     for (var i = 0; i < this.dyePacks.length; i++)
     {
-        this.patrolSet.dyePackCollide(this.dyePacks[i]);
+        if (this.patrolSet.dyePackCollide(this.dyePacks[i]))
+        {
+            this.zoomCam.addCamera(this.dyePacks[i]);
+        }
     }
     
     // Camden: checking for hero collision
-    this.patrolSet.heroCollide(this.hero);
+    if (this.patrolSet.heroCollide(this.hero))
+    {
+        this.hero.startShake();
+        this.zoomCam.enableHeroCam();
+    }
+    
+    if (!this.hero.isShaking()) this.zoomCam.disableHeroCam();
     
     if(this.testDyePack.isDead())
     {
@@ -149,9 +218,13 @@ MyGame.prototype.update = function ()
     
     this.testDyePack.update();
     this.hero.update();
+    this.zoomCam.updateHeroPos(this.hero);
+    
     this.patrolSet.update();
     
     this.background.update();
+    
+    this.zoomCam.update();
     
     document.getElementById("num_dyepacks").innerHTML = this.dyePacks.length;
 };
