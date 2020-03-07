@@ -2,7 +2,7 @@
  * Patrol Class
  ********************************************************************************/
 
-function Patrol( spriteSheet, positionX, positionY, velocityX, velocityY, worldWidth)
+function Patrol( spriteSheet, positionX, positionY, velocityX, velocityY, worldWidth, showBound)
 {
     this.spriteSheet = spriteSheet;
     
@@ -17,7 +17,7 @@ function Patrol( spriteSheet, positionX, positionY, velocityX, velocityY, worldW
     
     this.boundingBox = [0, 0, 0, 0];
     
-    this.showBound = false; 
+    this.showBound = showBound; 
     
     //Create the head - the leader of the patrol (not animated)
     this.head = new SpriteRenderable(this.spriteSheet); 
@@ -78,15 +78,19 @@ Patrol.prototype._updateBound = function( renderable)
     
     //Top left to top right (top bound)
     boundArray[0] = new LineRenderable(xPos - width / 2, yPos + height / 2, xPos + width / 2, yPos + height / 2);
+    boundArray[0].setColor([1,1,1,1]);
     
     //Bottom left to bottom right (bottom bound)
     boundArray[1] = new LineRenderable(xPos - width / 2, yPos - height / 2, xPos + width / 2, yPos - height / 2);
+    boundArray[1].setColor([1,1,1,1]);
     
     //Top left to bottom left (left bound)
     boundArray[2] = new LineRenderable(xPos - width / 2, yPos + height / 2, xPos - width / 2, yPos - height /2);
+    boundArray[2].setColor([1,1,1,1]);
     
     //Top right to bottom right (right bound)
     boundArray[3] = new LineRenderable(xPos + width / 2, yPos + height / 2, xPos + width / 2, yPos - height /2);
+    boundArray[3].setColor([1,1,1,1]);
     
     return boundArray;
 };
@@ -103,17 +107,25 @@ Patrol.prototype._updatePatrolBound = function()
        
     //Top left to top right (top bound)
     this.patrolBound[0] = new LineRenderable(xPos - width / 2, yPos + height / 2, xPos + width / 2, yPos + height / 2);
+    this.patrolBound[0].setColor([1,1,1,1]);
     
     //Bottom left to bottom right (bottom bound)
     this.patrolBound[1] = new LineRenderable(xPos - width / 2, yPos - height / 2, xPos + width / 2, yPos - height / 2);
+    this.patrolBound[1].setColor([1,1,1,1]);
     
     //Top left to bottom left (left bound)
     this.patrolBound[2] = new LineRenderable(xPos - width / 2, yPos + height / 2, xPos - width / 2, yPos - height /2);
+    this.patrolBound[2].setColor([1,1,1,1]);
     
     //Top right to bottom right (right bound)
     this.patrolBound[3] = new LineRenderable(xPos + width / 2, yPos + height / 2, xPos + width / 2, yPos - height /2);
-}
+    this.patrolBound[3].setColor([1,1,1,1]);
+};
 
+Patrol.prototype.setShowBound = function (showBound)
+{
+    this.showBound = showBound;
+};
 
 
 
@@ -158,13 +170,6 @@ Patrol.prototype.update = function ()
         this.topCollision();
         this.bottomCollision();
     }
-    
-    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.B))
-    {
-        this.showBound = !this.showBound;
-    }
-    
-    
     
     this.top.updateAnimation();
     this.bottom.updateAnimation();

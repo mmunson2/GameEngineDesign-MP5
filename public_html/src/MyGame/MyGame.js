@@ -23,6 +23,7 @@ function MyGame()
     this.trees2Texture = "assets/trees2.png";
        
     this.powerUp = false;
+    this.showBound = false;
     
     this.hero = null;
     
@@ -165,6 +166,14 @@ MyGame.prototype.update = function ()
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.A))
     {
         this.powerUp = !this.powerUp;
+    }
+    
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.B))
+    {
+        this.showBound = !this.showBound;
+        
+        this.hero.setShowBound(this.showBound);
+        this.patrolSet.setShowBound(this.showBound);
     }
 
     // Camden: updating all the dye packs

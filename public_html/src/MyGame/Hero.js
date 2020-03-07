@@ -50,16 +50,25 @@ Hero.prototype._updateHeroBound = function()
        
     //Top left to top right (top bound)
     this.heroBound[0] = new LineRenderable(xPos - width / 2, yPos + height / 2, xPos + width / 2, yPos + height / 2);
+    this.heroBound[0].setColor([1,1,1,1]);
     
     //Bottom left to bottom right (bottom bound)
     this.heroBound[1] = new LineRenderable(xPos - width / 2, yPos - height / 2, xPos + width / 2, yPos - height / 2);
+    this.heroBound[1].setColor([1,1,1,1]);
     
     //Top left to bottom left (left bound)
     this.heroBound[2] = new LineRenderable(xPos - width / 2, yPos + height / 2, xPos - width / 2, yPos - height /2);
+    this.heroBound[2].setColor([1,1,1,1]);
     
     //Top right to bottom right (right bound)
     this.heroBound[3] = new LineRenderable(xPos + width / 2, yPos + height / 2, xPos + width / 2, yPos - height /2);
-}
+    this.heroBound[3].setColor([1,1,1,1]);
+ }
+
+Hero.prototype.setShowBound = function (showBound)
+{
+    this.showBoundingBox = showBound;
+};
 
 
 Hero.prototype.update = function ()
@@ -68,12 +77,7 @@ Hero.prototype.update = function ()
     {
         this.startShake();
     }
-    
-    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.B))
-    {
-        this.showBoundingBox = !this.showBoundingBox;
-    }
-    
+        
     if (this.shaker !== null && !this.shaker.shakeDone())
     {
         var result = this.shaker.getShakeResults();

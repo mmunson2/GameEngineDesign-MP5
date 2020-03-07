@@ -9,6 +9,7 @@ function PatrolSet(spriteSheet, worldWidth)
     this.patrolArray = [];
     this.autoSpawn = false;
     this.waiting = false;
+    this.showBound = false;
     this.remainingFrames = 0;
     
     this.spriteSheet = spriteSheet;
@@ -26,6 +27,17 @@ PatrolSet.prototype.draw = function (camera)
         this.patrolArray[i].draw(camera);
     }
 };
+
+PatrolSet.prototype.setShowBound = function (showBound)
+{
+    this.showBound = showBound;
+    
+    for(var i = 0; i < this.patrolArray.length ; i++)
+    {
+        this.patrolArray[i].setShowBound(showBound);
+    }
+}
+
 
 PatrolSet.prototype.update = function ()
 {
@@ -157,6 +169,6 @@ PatrolSet.prototype._spawnPatrol = function()
     // 10/60 and 5/60
     var velocityX = ((Math.random() > 0.5) ? -1 : 1) * (Math.random() * 5 + 5) / 60;
     var velocityY = ((Math.random() > 0.5) ? -1 : 1) * (Math.random() * 5 + 5) / 60;
-    patrol = new Patrol(this.spriteSheet, Math.random() * (this.worldWidth / 2), Math.random() * (this.worldHeight / 4) - this.worldHeight / 8, velocityX, velocityY, this.worldWidth);
+    patrol = new Patrol(this.spriteSheet, Math.random() * (this.worldWidth / 2), Math.random() * (this.worldHeight / 4) - this.worldHeight / 8, velocityX, velocityY, this.worldWidth, this.showBound);
     this.patrolArray.push(patrol);
 };
