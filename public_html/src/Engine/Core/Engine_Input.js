@@ -79,6 +79,7 @@ gEngine.Input = (function () {
     // Click events: once an event is set, it will remain there until polled
     var mIsKeyClicked = [];
 
+    var mIsKeyReleased = [];
 
     // Support mouse
     var mCanvas = null;
@@ -158,7 +159,8 @@ gEngine.Input = (function () {
         var i;
         for (i = 0; i < kKeys.LastKeyCode; i++) {
             mIsKeyClicked[i] = (!mKeyPreviousState[i]) && mIsKeyPressed[i];
-            mKeyPreviousState[i] = mIsKeyPressed[i];
+            mIsKeyReleased[i] = (mKeyPreviousState[i] && !mIsKeyPressed[i]);
+            mKeyPreviousState[i] = mIsKeyPressed[i];     
         }
         for (i = 0; i < 3; i++) {
             mIsButtonClicked[i] = (!mButtonPreviousState[i]) && mIsButtonPressed[i];
@@ -173,6 +175,10 @@ gEngine.Input = (function () {
 
     var isKeyClicked = function (keyCode) {
         return (mIsKeyClicked[keyCode]);
+    };
+
+    var isKeyReleased = function (keyCode) {
+        return (mIsKeyReleased[keyCode]);
     };
 
     var isButtonPressed = function (button) {
@@ -192,6 +198,7 @@ gEngine.Input = (function () {
         // keyboard support
         isKeyPressed: isKeyPressed,
         isKeyClicked: isKeyClicked,
+        isKeyReleased: isKeyReleased,
         keys: kKeys,
 
         // Mouse support

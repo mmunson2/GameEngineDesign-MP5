@@ -184,9 +184,14 @@ DyePack.prototype.startShake = function()
 
 DyePack.prototype._checkInput = function ()
 {    
-    if(gEngine.Input.isKeyClicked(gEngine.Input.keys.D))
+    if(gEngine.Input.isKeyPressed(gEngine.Input.keys.D))
     {
         this.isDeaccelerating = true;
+    }
+    if(gEngine.Input.isKeyReleased(gEngine.Input.keys.D))
+    {
+        this.isDeaccelerating = false;
+        console.log("Up!");
     }
     
     if(gEngine.Input.isKeyClicked(gEngine.Input.keys.S))

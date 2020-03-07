@@ -100,7 +100,7 @@ Patrol.prototype._updatePatrolBound = function()
     
     var xPos = this.boundingBox[2] + width / 2;
     var yPos = this.boundingBox[1] + height / 2;
-    
+       
     //Top left to top right (top bound)
     this.patrolBound[0] = new LineRenderable(xPos - width / 2, yPos + height / 2, xPos + width / 2, yPos + height / 2);
     
@@ -131,12 +131,15 @@ Patrol.prototype.draw = function ( camera )
     
     this.bottom.draw( camera );
     
-    for(var i = 0; i < 4; i++)
+    if(this.showBound)
     {
-        this.topBound[i].draw( camera );
-        this.bottomBound[i].draw( camera );
-        this.headBound[i].draw( camera );
-        this.patrolBound[i].draw( camera );
+        for(var i = 0; i < 4; i++)
+        {
+            this.topBound[i].draw( camera );
+            this.bottomBound[i].draw( camera );
+            this.headBound[i].draw( camera );
+            this.patrolBound[i].draw( camera );
+        }
     }
     
     
