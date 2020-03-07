@@ -36,6 +36,8 @@ function MyGame()
     this.dyePacks = [];
     
     this.patrolSet = null;
+    
+    this.background = null;
   
 }
 gEngine.Core.inheritPrototype(MyGame, Scene);
@@ -61,18 +63,8 @@ MyGame.prototype.initialize = function ()
     this.hero = new Hero(this.spriteSheet);
     
     this.patrolSet = new PatrolSet(this.spriteSheet, 200);
-    
-    
-    this.sky = new TextureRenderable(this.skyTexture);
-    this.sky.getXform().setPosition(0, 0);
-    this.sky.getXform().setHeight(200 / 1.333333);
-    this.sky.getXform().setWidth(200);
-    
-    this.mountain = new TextureRenderable(this.mountainTexture);
-    this.mountain.getXform().setPosition(0,-10);
-    this.mountain.getXform().setHeight(200 / 1.33333);
-    this.mountain.getXform().setWidth(200);
-    
+
+    this.background = new Background(this.skyTexture, this.mountainTexture, this.mountainsTexture, this.trees1Texture, this.trees2Texture);
 };
 
 MyGame.prototype.unloadScene = function ()
@@ -95,8 +87,7 @@ MyGame.prototype.draw = function ()
     this.mCamera.setupViewProjection();
     
     
-    this.sky.draw( this.mCamera );
-    this.mountain.draw( this.mCamera );
+    this.background.draw(this.mCamera);
     
     
     
@@ -110,20 +101,6 @@ MyGame.prototype.draw = function ()
     this.testDyePack.draw(this.mCamera);
     
     this.patrolSet.draw(this.mCamera);
-    
-    
-};
-
-MyGame.prototype._wrapTexture = function (camera, renderable)
-{
-    var width = renderable.getXform().getWidth();
-    var height = renderable.getXform().getHeight();
-    
-    var startX = renderable.getXform().getPosition()[0];
-    var startY = renderable.getXform().getPosition()[1];
-    
-    var worldLeftBound = -200 / 2;
-    var worldRightBound = 200 / 2;
     
     
 };
@@ -173,6 +150,8 @@ MyGame.prototype.update = function ()
     this.testDyePack.update();
     this.hero.update();
     this.patrolSet.update();
+    
+    this.background.update();
     
     document.getElementById("num_dyepacks").innerHTML = this.dyePacks.length;
 };
