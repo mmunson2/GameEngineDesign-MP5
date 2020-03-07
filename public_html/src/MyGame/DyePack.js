@@ -179,6 +179,12 @@ DyePack.prototype.startShake = function()
     this.velocityY = 0;
 };
 
+// Camden: start deaccel
+DyePack.prototype.startDeac = function()
+{
+    this.isDeaccelerating = true;
+};
+
 //_______________________________________________________________________________
 //Private Methods
 
@@ -193,13 +199,5 @@ DyePack.prototype._checkInput = function ()
     {                
         this.startShake();
     }
-    
-};
-
-DyePack.prototype._hit = function ()
-{
-    
-    
-    
     
 };

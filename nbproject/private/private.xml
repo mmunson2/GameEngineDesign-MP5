@@ -5,7 +5,7 @@
             <url>public_html/src/MyGame/MyGame.js</url>
             <bookmark id="1">
                 <name/>
-                <line>83</line>
+                <line>74</line>
                 <key/>
             </bookmark>
         </file>
@@ -16,14 +16,13 @@
         <group name="AllBookProjects"/>
         <group name="Apress-2d-game-engine"/>
         <group>
-            <file>file:/Users/matthewmunson/Documents/GitHub/GameEngineDesign-MP5/public_html/src/MyGame/DyePack.js</file>
-            <file>file:/Users/matthewmunson/Documents/GitHub/GameEngineDesign-MP5/public_html/src/Engine/Renderables/Renderable.js</file>
-            <file>file:/Users/matthewmunson/Documents/GitHub/GameEngineDesign-MP5/public_html/src/Engine/Renderables/TextureRenderable.js</file>
-            <file>file:/Users/matthewmunson/Documents/GitHub/GameEngineDesign-MP5/public_html/src/MyGame/MyGame.js</file>
-            <file>file:/Users/matthewmunson/Documents/GitHub/GameEngineDesign-MP5/public_html/src/MyGame/Hero.js</file>
-            <file>file:/Users/matthewmunson/Documents/GitHub/GameEngineDesign-MP5/public_html/src/Engine/Renderables/SpriteAnimateRenderable.js</file>
-            <file>file:/Users/matthewmunson/Documents/GitHub/GameEngineDesign-MP5/public_html/src/MyGame/Patrol.js</file>
-            <file>file:/Users/matthewmunson/Documents/GitHub/GameEngineDesign-MP5/public_html/src/MyGame/PatrolSet.js</file>
+            <file>file:/C:/Users/Camden/GitHub/GameEngineDesign-MP5/public_html/src/MyGame/Patrol.js</file>
+            <file>file:/C:/Users/Camden/GitHub/GameEngineDesign-MP5/public_html/src/MyGame/DyePack.js</file>
+            <file>file:/C:/Users/Camden/GitHub/GameEngineDesign-MP5/public_html/src/Engine/Renderables/TextureRenderable_PixelCollision.js</file>
+            <file>file:/C:/Users/Camden/GitHub/GameEngineDesign-MP5/public_html/src/MyGame/MyGame.js</file>
+            <file>file:/C:/Users/Camden/GitHub/GameEngineDesign-MP5/public_html/src/Engine/Renderables/Renderable.js</file>
+            <file>file:/C:/Users/Camden/GitHub/GameEngineDesign-MP5/public_html/src/MyGame/Hero.js</file>
+            <file>file:/C:/Users/Camden/GitHub/GameEngineDesign-MP5/public_html/src/MyGame/PatrolSet.js</file>
         </group>
     </open-files>
 </project-private>

@@ -116,4 +116,6 @@ MyGame.prototype.update = function ()
     this.testDyePack.update();
     this.hero.update();
     this.patrolSet.update();
+    
+    document.getElementById("num_dyepacks").innerHTML = this.dyePacks.length;
 };

@@ -71,6 +71,9 @@ PatrolSet.prototype.update = function ()
             break;
         }
     }
+    
+    document.getElementById("num_patrols").innerHTML = this.patrolArray.length;
+    document.getElementById("auto_spawn").innerHTML = this.autoSpawn;
 };
 
 PatrolSet.prototype.dyePackCollide = function(dyePack)
@@ -85,7 +88,7 @@ PatrolSet.prototype.dyePackCollide = function(dyePack)
         {
             continue;
         }
-        
+        dyePack.startDeac();
         if (!dyePack.isShaking() && this.isNear(dyePackBox, this.patrolArray[i].getHead().getBoundingBox()))
         {
             this.patrolArray[i].headCollision();

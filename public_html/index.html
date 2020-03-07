@@ -3,6 +3,7 @@
     <head>
         <title>CottageLakeMP5</title>
         <link rel ="icon" type ="image/x-icon" href="./assets/favicon.png">
+        <link rel = "stylesheet" href = "style.css" >
 
         <!-- the following says there are javascript source code contained in 
              the external source files
@@ -70,10 +71,45 @@
         var myGame = new MyGame();
         gEngine.Core.initializeEngineCore('GLCanvas', myGame);
      ">
+        
+    <h1> MP5 </h1>
+        
+        <p class = "flavor"> <b><i> Team Cottage Lake : Camden Brewster and Matthew Munson </i> </b> </p>
+        
         <canvas id="GLCanvas" width="800" height="800">
             <!-- GLCanvas is the area we will draw in: a 640x480 area. -->
             Your browser does not support the HTML5 canvas.
             <!-- this message will show only if WebGL clearing failed -->
         </canvas>
+        
+    <!-- Printing Out The Info -->
+    <h2 class = "info"> Information </h2>
+    
+        <p class = "info">
+            
+            Number of Patrols: 
+            <b id = "num_patrols"> </b> <br>
+        
+            Number of DyePacks: 
+            <b id = "num_dyepacks"> </b> <br>
+        
+            Auto Spawn: 
+            <b id = "auto_spawn"> </b> <br>
+        </p>
+        
+    <h2 class = "control"> Controls </h2>
+        
+        <p class = "control">
+            Shoot DyePack: <b> Space </b><br>
+            Hero Hit Event: <b> Q </b><br>
+            DyePack Slow Down: <b> D </b><br>
+            DyePack Shake: <b> S </b><br>
+            Toggle Auto Spawn: <b> P </b><br>
+            Spawn Patrol: <b> C </b><br>
+            Toggle Bounds: <b> B </b><br>
+            Head Hit Event: <b> J </b><br>
+            Wing Hit Event: <b> W </b><br>
+        </p>
+        
     </body>
 </html>
